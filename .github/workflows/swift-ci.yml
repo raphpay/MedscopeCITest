@@ -21,23 +21,7 @@ jobs:
         with:
           version: ${{ matrix.swift-version }}
 
-      - name: Cache Swift Package Manager
-        uses: actions/cache@v4
-        with:
-          path: .build
-          key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-spm-
-
-      - name: Cache MongoDB Binary
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: mongodb-macos-x86_64-5.0.8
-          key: mongodb-macos-5.0.8
-
-      - name: Download MongoDB (if not cached)
-        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Download MongoDB
         run: |
           curl https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-5.0.8.tgz --output mongodb.tgz
           tar -xzf mongodb.tgz
@@ -51,14 +35,6 @@ jobs:
         run: |
           ./mongodb-macos-x86_64-5.0.8/bin/mongo --eval "rs.initiate()"
 
-      - name: Cache RubyGems
-        uses: actions/cache@v4
-        with:
-          path: ~/.gem
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-
       - name: Install xcpretty
         run: gem install xcpretty
 
@@ -70,3 +46,7 @@ jobs:
         run: |
           set -o pipefail
           swift test --enable-code-coverage | xcpretty
+
+      - name: Fail if tests failed
+        if: failure()
+        run: exit 1
