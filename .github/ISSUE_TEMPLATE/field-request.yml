@@ -1,0 +1,30 @@
+name: Field request (add - modify - delete)
+description: Create a field request
+title: "[FIELD] - "
+projects: ["glad-medical/1"]
+body: 
+  - type: textarea
+    id: list-of-fields
+    attributes:
+      label: List of the fields
+      description: A complete list of the fields to add, delete or modify.
+      placeholder: List the fields and precise the actions to do 
+  - type: textarea
+    id: description-of-fields
+    attributes:
+      label: Description of the fields
+      description: A field by field description
+      placeholder: |
+        1. first field...
+        2. second field...
+  - type: textarea
+    id: additional-routes
+    attributes:
+      label: Additional routes
+      description: Precise if a new route is needed or if a route needs to be modified or deleted
+      placeholder: Details and lists all the route are needed.
+
+  - type: markdown
+    attributes:
+      value: |
+        **If applicable, add screenshots in comment.**

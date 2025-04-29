@@ -1,0 +1,72 @@
+name: Swift CI
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        swift-version: ["6.0.2"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Swift ${{ matrix.swift-version }}
+        uses: SwiftyLab/setup-swift@latest
+        with:
+          version: ${{ matrix.swift-version }}
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: Cache MongoDB Binary
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: mongodb-macos-x86_64-5.0.8
+          key: mongodb-macos-5.0.8
+
+      - name: Download MongoDB (if not cached)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          curl https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-5.0.8.tgz --output mongodb.tgz
+          tar -xzf mongodb.tgz
+
+      - name: Start mongod
+        run: |
+          mkdir dbpath
+          ./mongodb-macos-x86_64-5.0.8/bin/mongod --dbpath dbpath --replSet repl0 --bind_ip localhost &
+
+      - name: Initiate replica set
+        run: |
+          ./mongodb-macos-x86_64-5.0.8/bin/mongo --eval "rs.initiate()"
+
+      - name: Cache RubyGems
+        uses: actions/cache@v4
+        with:
+          path: ~/.gem
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: Run tests
+        env:
+          MONGO_DB_HOST: localhost
+          MONGO_DB_PORT: 27017
+          MONGO_DB_REPLICA_SET: repl0
+        run: |
+          set -o pipefail
+          swift test --enable-code-coverage | xcpretty

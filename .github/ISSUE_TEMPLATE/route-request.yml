@@ -1,0 +1,17 @@
+name: Route request (add - modify - delete)
+description: Create a route request
+title: "[ROUTE] - "
+projects: ["glad-medical/1"]
+body: 
+  - type: textarea
+    id: description-of-fields
+    attributes:
+      label: Description of the routes to add, modify or delete
+      description: A route by route description
+      placeholder: |
+        1. first route...
+        2. second route...
+  - type: markdown
+    attributes:
+      value: |
+        **If applicable, add screenshots in comment.**

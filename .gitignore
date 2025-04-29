@@ -1,0 +1,16 @@
+Packages
+.build
+xcuserdata
+*.xcodeproj
+DerivedData/
+.DS_Store
+db.sqlite
+.swiftpm
+.env
+.env.*
+! .env.example
+.vscode
+*.profdata
+coverage_reports/
+Resources/Uploads/test/path/
+Baseline.json
