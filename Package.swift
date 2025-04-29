@@ -20,7 +20,7 @@ let package = Package(
         // SendGrid emails
         .package(url: "https://github.com/vapor-community/sendgrid-kit.git", from: "2.0.0"),
         // Zip
-        .package(url: "https://github.com/vapor-community/Zip.git", exact: "2.2.0"),
+        .package(url: "https://github.com/vapor-community/Zip.git", exact: "2.2.6"),
         // Queues
         .package(url: "https://github.com/vapor/queues.git", from: "1.0.0"),
         // SwiftLint

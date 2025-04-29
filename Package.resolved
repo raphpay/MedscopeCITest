@@ -1,5 +1,5 @@
 {
-  "originHash" : "f967afce13954bdd42ffb31b6be6b987e134327422cfd7b4446682fd6df8dddb",
+  "originHash" : "eb72b2af72e320b84a40d88c834332f32232690d47cb295cf2efedbd21f83b25",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -312,8 +312,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor-community/Zip.git",
       "state" : {
-        "revision" : "f4161af4520aeccbee8d2b1f36b0067d158fd416",
-        "version" : "2.2.0"
+        "revision" : "49e6ec895c02d671c191b6ce17064b3981d5ab45",
+        "version" : "2.2.6"
       }
     }
   ],
