@@ -1,6 +1,8 @@
 name: Swift CI
 
 on:
+  push:
+    branches: ["rpa-test-ci"]
   pull_request:
     branches: ["main"]
 
